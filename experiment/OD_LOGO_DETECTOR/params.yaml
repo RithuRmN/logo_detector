@@ -1,0 +1,47 @@
+
+GenerateTFRecord:
+  create_tfrecord : True # if true should mention split in PrepareLabels
+  output_path : 'experiment/OD_LOGO_DETECTOR/TEMP/tf_record'
+  image_dir : 'data/train_image_rotated' 
+  split: ['train',val]
+Train1:
+  path_dataset : 'experiment/OD_LOGO_DETECTOR/TEMP/tf_record'
+  tiny : False  #yolov3 or yolov3-tiny
+  weights : 'src/ObjectDetection/Training/checkpoint/yolov3.tf'  #path to weights file
+  classes : 'src/ObjectDetection/Training/data/lines.names' #path to classes file
+  mode : 'fit' #['fit', 'eager_fit', 'eager_tf'] fit: model.fit / eager_fit: model.fit(run_eagerly=True) / eager_tf: custom GradientTape')
+  transfer : 'darknet' #['none', 'darknet', 'no_output', 'frozen', 'fine_tune','fine_tune_no_freeze'] 
+  size : 416 #Image_size
+  epochs : 250
+  batch_size : 16
+  learning_rate : 0.0001
+  optimizer : 'adam'
+  num_classes : 80 #number of classes in the model
+  weights_num_classes : None  #specify num class for `weights` file if different, useful in transfer learning with different number of classes
+  output_checkpoint : 'src/ObjectDetection/Training/checkpoint/stage1' #path to weights file
+Train2:
+  path_dataset : 'experiment/OD_LOGO_DETECTOR/TEMP/tf_record'
+  tiny : False  #yolov3 or yolov3-tiny
+  weights : 'src/ObjectDetection/Training/checkpoint/stage1/checkpoints/yolov3_train.tf'  #path to weights file
+  classes : 'src/ObjectDetection/Training/data/lines.names' #path to classes file
+  mode : 'fit' #['fit', 'eager_fit', 'eager_tf'] fit: model.fit / eager_fit: model.fit(run_eagerly=True) / eager_tf: custom GradientTape')
+  transfer : 'fine_tune_everything' #['none', 'darknet', 'no_output', 'frozen', 'fine_tune','fine_tune_no_freeze'] 
+  size : 416 #Image_size
+  epochs : 200
+  batch_size : 8
+  learning_rate : 0.00001
+  optimizer : 'adam'
+  num_classes : 80 #number of classes in the model
+  weights_num_classes : None  #specify num class for `weights` file if different, useful in transfer learning with different number of classes
+  output_checkpoint : 'src/ObjectDetection/Training/checkpoint/stage2' #path to weights file  
+Inference:
+  tfrecord: False #'experiment/OD_2LINES/TEMP/tf_record/val.tfrecord' # False Or path
+  img_dir_path : 'data/train_image_rotated' 
+  annotation_csv: 'experiment/OD_LOGO_DETECTOR/TEMP/val.csv'
+  tiny : False  #yolov3 or yolov3-tiny
+  weights : 'src/ObjectDetection/Training/checkpoint/stage2/checkpoints/yolov3_train.tf'  #path to weights file
+  classes : 'src/ObjectDetection/Training/data/lines.names' #path to classes file
+  size : 416 #Image_size
+  num_classes : 80 #number of classes in the model
+  output_path : 'experiment/OD_LOGO_DETECTOR/TEMP/output_val' 
+  

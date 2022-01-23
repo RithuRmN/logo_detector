@@ -1,0 +1,16 @@
+tensorflow==2.3.0
+keras==2.4.3
+numpy
+absl-py
+PyYAML
+pandas
+auto_mix_prep
+object_detection
+Pillow
+opencv-python
+imgaug
+mlflow
+scikit-learn
+scikit-image
+wxPython
+fastapi

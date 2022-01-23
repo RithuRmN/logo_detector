@@ -1,0 +1,101 @@
+<html>
+<head>
+	<script src="{{ url_for('static',path='jquery.js') }}"></script>
+    <title>Logo Detector</title>
+<style>
+    #loading{
+        position: fixed;
+          width: 100%;
+          height: 100%;
+          left: 0%;
+          top: 0%;
+          background-color:white;
+          opacity:.8;
+      }
+      #loading_gif{
+          margin-left:45%;
+          margin-top:20%;
+          opacity:1;
+      }
+      </style>    
+</head>
+<body>
+    <div id="loading"><img src= "{{ url_for('static',path='Processing.gif') }}" width="200px" height="200px" id="loading_gif"></div>
+    <table align="center">
+        <tr>
+            <td bgcolor="lightgray" width="800px" height="100px">
+                <center><font color="Blue" face="century"> <h1>Logo Detector - Allianz</h1></font></center>
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="gray" width="800px" height="400px">
+                <center>
+                <label>Input Image Path  &nbsp;&nbsp; : </label><input type="text" placeholder="Select input image path" id="image_path" />
+                <input type="Button" value="Select" id="input_select"/>
+                <br><br>
+                <label>Output Image Path : </label><input type="text" placeholder="Select output image path"  id="output_path"/>
+                <input type="Button" value="Select" id="output_select"/>
+                <br><br>
+                <input type="Button" value="Detect" id="detect"/>
+               
+                <font color="white"><span id='output'></span></font>
+                </center>
+            </td>
+        </tr>
+    </table>
+    <script>
+       $("#loading").hide(); 
+        $(function(){
+            $('#input_select').click(function(){
+
+                $.ajax({
+                    url: '/input_click',
+                    data: "test",
+                    type: 'GET',
+                    success: function(response){
+                        console.log(response)
+                        document.getElementById("image_path").value=response.path;  
+                    },
+                    error: function(error){ }
+                });
+            });
+        });
+        $(function(){
+            $('#output_select').click(function(){
+
+                $.ajax({
+                    url: '/output_click',
+                    data: "test",
+                    type: 'GET',
+                    success: function(response){
+                        console.log(response)
+                        document.getElementById("output_path").value=response.path;
+                    },
+                    error: function(error){ }
+                });
+            });
+        });
+        $(function(){
+            $('#detect').click(function(){
+                data={"input_path":$("#image_path").val(),"output_path":$("#output_path").val()}
+                $.ajax({
+                    url: '/detect',
+                    data: data,
+                    type: 'GET',
+                    beforeSend: function(){
+                            $("#loading").show();
+                        },
+                    complete: function(){
+                            $("#loading").hide();
+                    },
+                    success: function(response){
+                        console.log(response)
+                        document.getElementById("output").innerHTML="<p id='output'>'"+response.result+"'</p>";
+                    },
+                    error: function(error){ }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
