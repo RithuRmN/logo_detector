@@ -1,4 +1,4 @@
-python==3.8
+python==3.8.12
 tensorflow==2.3.0
 keras==2.4.3
 numpy
@@ -6,7 +6,7 @@ absl-py
 PyYAML
 pandas
 auto_mix_prep
-object_detection
+object-detection
 Pillow
 opencv-python
 imgaug
