@@ -1,5 +1,6 @@
 
 #Augmentation
+
 python src/data_processing/RotateImagesWithBB.py --input_csv_path data/annotation/train.csv --output_csv_path data/annotation/train_rotated.csv --input_images_root data/train_Images --output_images_root data/train_image_rotated
 
 #TO create TF Records

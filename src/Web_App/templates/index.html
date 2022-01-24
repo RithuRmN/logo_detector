@@ -17,6 +17,36 @@
           margin-top:20%;
           opacity:1;
       }
+	.button {
+	  background-color: #f44336;
+	  color: white;
+
+	  border: 2px solid #f44336;
+	  padding: 10px 20px;
+	  text-align: center;
+	  text-decoration: none;
+	  display: inline-block;
+	  font-size: 12px;
+	  margin: 4px 2px;
+	  transition-duration: 0.4s;
+	  cursor: pointer;
+	  border-radius: 4px;
+	}
+
+	.button:hover {
+	  background-color: white; 
+	  color: black; 
+	}
+	input[type=text], select 
+	{
+	  
+	  padding: 10px 20px;
+	  margin: 4px 0;
+	  display: inline-block;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	  box-sizing: border-box;
+	}
       </style>    
 </head>
 <body>
@@ -30,21 +60,30 @@
         <tr>
             <td bgcolor="gray" width="800px" height="400px">
                 <center>
-                <label>Input Image Path  &nbsp;&nbsp; : </label><input type="text" placeholder="Select input image path" id="image_path" />
-                <input type="Button" value="Select" id="input_select"/>
+                 <font color="yellow" face="century">
+                <label><h3>Input Image Path  &nbsp;&nbsp; : </label><input type="text" placeholder="Select input image path" id="image_path" />
+                <input type="Button" class="button" value="Select" id="input_select"/>
                 <br><br>
                 <label>Output Image Path : </label><input type="text" placeholder="Select output image path"  id="output_path"/>
-                <input type="Button" value="Select" id="output_select"/>
+                <input type="Button" class="button" value="Select" id="output_select"/>
                 <br><br>
-                <input type="Button" value="Detect" id="detect"/>
-               
-                <font color="white"><span id='output'></span></font>
+                <input type="Button" class="button" value="Detect" id="detect"/>
+                </font>
+                <font color="white">
+                <span id='output'>
+		
+                </span></font>
+
+                <span id='output_button'>
+		<input type="button" class="button" value="Open Output Folder" id="show_output"/>
+                </span></font
                 </center>
             </td>
         </tr>
     </table>
     <script>
        $("#loading").hide(); 
+       $("#output_button").hide();
         $(function(){
             $('#input_select').click(function(){
 
@@ -90,7 +129,25 @@
                     },
                     success: function(response){
                         console.log(response)
+                        $("#output_button").show();
                         document.getElementById("output").innerHTML="<p id='output'>'"+response.result+"'</p>";
+                    },
+                    error: function(error){ }
+                });
+            });
+        });
+
+        $(function(){
+            $('#show_output').click(function(){
+                data={"output_path":$("#output_path").val()}
+                $.ajax({
+                    url: '/open_folder',
+                    data: data,
+                    type: 'GET',
+                    
+                    success: function(response){
+                        console.log(response)
+                        
                     },
                     error: function(error){ }
                 });

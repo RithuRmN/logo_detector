@@ -83,6 +83,16 @@ def select_output_path():
     print(folder_selected)
     return {"path": folder_selected} 
 
+@app.get("/open_folder")
+def open_folder(request: Request):
+    
+    output_path=request.query_params['output_path']
+    print(output_path)
+    path = os.path.realpath(output_path)
+    os.startfile(path)
+    #os.system(f'start{os.path.realpath(path)}')
+    return {"path": "Success"}
+    
 @app.get("/detect")
 def detect(request: Request):
     image_path=request.query_params['input_path']
